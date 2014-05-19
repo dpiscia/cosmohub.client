@@ -1,0 +1,33 @@
+<style>
+.nav-tabs{
+
+font-size:3ex;
+}
+
+</style>
+
+<div class="container">
+	<h2>{{catalog.catalog.name}}</h2>
+	<p markdown="catalog.catalog.description"></p>
+	<!--div class="row" style="padding-top:2ex;padding-bottom:2ex; background-color:black">
+		<div class="col-md-2 ">
+			<a ui-sref=".prebuilt"><button   class="btn btn-primary">Value-added catalogs</button></a>
+		</div>
+		<div class="col-md-2 col-md-offset-8">
+			<a ui-sref=".custom"><button   class="btn btn-primary">Custom catalog</button></a>
+		</div>
+	</div-->
+	 <tabset style="padding-top: 4ex">
+    	
+    <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active"  select="tab.fn()" style="cursor:pointer;">
+      
+    </tab>
+      			
+
+  </tabset>
+	<div ui-view autoscroll="false" style="padding-top:2ex"></div>
+	
+	
+</div>
+
+

@@ -1,0 +1,84 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="row text-center">
+				<h3 style="text-align: center;">Groups</h3>
+				<br>
+				<div class="row text-center">
+                   <div class="col-lg-8 col-lg-offset-2">
+                    <select ng-model="groups_filter" class="form-control" >
+                        
+                        <option ng-repeat="catalog in filtered_cat | unique:'group'" value="{{catalog.group}}" ng-selected="catalog.group == groups_filter">{{catalog.group}}</option>
+                        <option value="!!">-- All Groups --</option>
+                        // unique options from the categories
+                    </select>
+                    </div>
+                </div>
+		 		<d3-pie data="data.groups" type="'group'"  update-fn="click_fn(type,name)"></d3-pie>
+		 	</div>
+		 	
+ 		</div>
+ 		<div class="col-md-4">
+ 			<div class="row text-center">
+		 		<h3 style="text-align:center;">Privacy</h3>
+		 		<br>
+		 		<div class="row text-center">
+                   <div class="col-lg-8 col-lg-offset-2">
+                    <select ng-model="status_filter"  class="form-control" >
+                        
+                        <option ng-repeat="catalog in filtered_cat | unique:'public'" value="{{catalog.public}}" ng-selected="catalog.public == status_filter" >{{public_converter(catalog.public)}}</option>
+                        <option value="!!">-- All Privacies --</option>
+                    </select>
+                    </div>
+                </div>
+		 		<d3-pie data="data.public" type="'public'"  update-fn="click_fn(type,name)"></d3-pie>
+		 	</div>
+ 		</div>
+ 		<div class="col-md-4">
+ 			<div class="row text-center">
+		 		<h3 style="text-align:center;">Origin</h3>
+		 		<br>
+                <div class="row text-center">
+                   <div class="col-lg-8 col-lg-offset-2">
+                    <select ng-model="type_filter"  class="form-control" >
+                        <option ng-repeat="catalog in filtered_cat | unique:'type'" value="{{catalog.type}}" ng-selected="catalog.type == type_filter" >{{type_converter(catalog.type)}}</option>
+                        <option value="!!">-- All Origins --</option>
+                    </select>
+                    </div>
+                </div>
+		 		<d3-pie data="data.type" type="'type'"  update-fn="click_fn(type,name)"></d3-pie>
+		 	</div>
+		</div>
+ 	</div>
+
+<!-- filter section --->
+
+
+ 
+	
+	
+<!-- data table section --->
+	<div class="row">
+		<div class="table-responsive">
+			<table class="table  table-hover">	
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Origin</th> 
+						<th>Date</th> 				
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="catalog in (filtered_cat = (catalogs | filter:{group:groups_filter, public:status_filter, type:type_filter} | unique:'name'))" >
+						<td style="white-space:nowrap;" ><a href="#/catalogs/{{catalog.name}}/prebuilt">{{catalog.name}}</a></td>
+						<td><p markdown="catalog.description"></p>  </td>
+						<td><p>{{type_converter(catalog.type)}}</p></td>
+						<td> <p style="white-space:nowrap;">{{catalog.date}}</p>   </td>
+	         		</tr>
+				</tbody>  
+			</table>
+		
+		</div>
+	</div>	
+</div>

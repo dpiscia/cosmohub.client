@@ -1,0 +1,114 @@
+<style>
+svg {
+background-color: white;}
+</style>
+<link rel="stylesheet" href="/results/scatter.css"/>
+
+<div class="panel panel-primary" style="background-color: rgb(245, 245, 245);">
+
+	<div class="panel-heading" > 
+			
+			<h2 class="panel-title text-center" style="color:rgb(256,256,256); font-size:19px">
+				Results
+
+			</h2>
+	</div>
+	<div class="container" style="padding-top:30px;padding-bottom:30px;">
+	<div class="row">
+		<div class="col-md-12" >
+			<div class=" alert alert-warning " ng-show="$parent.limited"> <i class="fa fa-exclamation-triangle fa-lg"></i> Results have been limited </div>
+			<div class=" alert alert-success " > {{results.length}} records loaded </div>
+			<div class="btn-group" >
+				<div class="col-md-3" >
+					<button type="button" class="btn btn-primary" ng-model="type" btn-radio="'table'"    >Table</button>
+				</div>
+				<div class="col-md-3" >
+					<button type="button" class="btn btn-primary" ng-model="type" btn-radio="'scatter'"  >Scatter plot</button>
+				</div>
+
+				<div class="col-md-3" >
+					<button type="button" class="btn btn-primary" ng-model="type" btn-radio="'bins'"  >Histogram plot</button>
+				</div>
+				<div class="col-md-3" >
+					<button type="button"  class="btn btn-default" ng-csv="format_data()" filename="test.csv">Download CSV file</button>
+				</div>
+			</div>  
+		</div>
+	</div>
+	<div class="row" style="padding-top:4ex;">
+		<div class="col-md-12" style="overflow: auto;  background-color:white" ng-show="type == 'table'" >
+		
+		<div class="table-responsive">
+			
+			<table class="table ">	
+				<thead>
+				
+					<tr>
+						<th ng-repeat="head in header"> {{head}} </th>
+					</tr>
+				</thead>
+	    		<tbody>
+	    			
+					<tr ng-repeat="result in results | startFrom:(currentPage-1)*maxSize | limitTo:maxSize"  >
+						<td ng-repeat="col in result track by $index"> {{col}}</td>
+						
+					</tr>
+				</tbody>  
+			</table>
+			<pagination total-items="results.length"  max-size="maxSize" page="currentPage" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+		</div>
+		
+	</div>		
+</div>
+
+<div class="row" ng-show="type == 'scatter'"  style="padding-top:4ex;">	
+	<div class="row"  style="padding-bottom:4ex;">
+		<div class="col-md-3">
+			X axis
+			<select class="form-control" ui-select2 ng-model="var1"  data-placeholder="Choose X field">
+	     			<option value=""></option>
+	     			<option ng-repeat="field in header " value="{{field}}">{{field}}</option>
+	  			// unique options from the categories
+			</select>
+		</div>
+		
+		<div class="col-md-3 col-md-offset-2 ">
+			Y axis 
+			<select class="form-control"  ui-select2 ng-model="var2"  data-placeholder="Choose Y field">
+	     			<option value=""></option>
+	     			<option ng-repeat="field in header " value="{{field}}">{{field}}</option>
+	  			// unique options from the categories
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<d3-scatter data="data" ></d3-scatter> 
+		</div>
+	</div>
+</div>
+
+
+<div class="row" ng-show="type == 'bins'" style="padding-top:4ex;">	
+	<div class="row" style="padding-bottom:4ex;">
+		<div class="col-md-3">
+			Variable
+			<select class="form-control" ui-select2 ng-model="var_bin" data-placeholder="Choose field">
+	     			<option value=""></option>
+	     			<option ng-repeat="field in header " value="{{field}}">{{field}}</option>
+	  			// unique options from the categories
+			</select>
+		</div>
+		<div class="col-md-4 col-md-offset-2">
+			Bins number
+			<input class="form-control" ng-model="bins_nbr">
+	     			
+
+		</div>	
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<linechart data="data_prova" options="options_prova" mode=""></linechart>
+		</div>
+	</div>	
+</div>

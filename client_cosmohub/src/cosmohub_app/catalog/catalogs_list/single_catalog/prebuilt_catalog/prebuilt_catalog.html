@@ -1,0 +1,24 @@
+<div  ng-show="catalog.dl_catalog.length > 0 " class="row">
+
+	<table ng-show="catalog.dl_catalog.length > 0 " class="table  table-hover">
+	    <thead>
+	        <tr>
+	            <th>Name</th>
+	            <th>Description</th>
+	            <th>Size</th>
+	            <th>Download</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr ng-repeat="prebuilt in catalog.dl_catalog | orderBy:'id'" >
+	            <td>{{prebuilt.name}}</td>
+	            <td>{{prebuilt.description}}</td>
+	            <td>{{prebuilt.size }}</td>
+	            <td>
+	                <a href="{{prebuilt.cat_download}}/{{user_id}}/{{token}}"><i class="fa fa-cloud-download fa-lg"></i> Download catalog </a><br />
+	                <a href="{{prebuilt.readme_download}}/{{user_id}}/{{token}}"><i class="fa fa-info-circle fa-lg"></i> Download README</a></td>
+	        </tr>
+	        
+	  </tbody>
+	</table>
+</div>

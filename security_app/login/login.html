@@ -1,0 +1,54 @@
+
+
+
+	<ng-include src=" ' /security/top_logo_template.html ' "></ng-include>
+	<div class="container">
+		<div  class="row central" style="padding-top: 50px; padding-bottom: 40px;">
+
+			<div class=" col-md-4 col-md-push-5 ">
+				
+				
+
+				
+				
+					<form  name="login_form" class="form-horizontal" role="form" ng-submit="myFunc(login_form)" novalidate >
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i class="fa  fa-envelope fa-lg fa-fw"></i></span>
+							<input id="name" name="name" ng-model="name" class="form-control" placeholder="Email" required >
+						 </div>
+				    	<div style="margin-bottom: 15px" class="input-group">
+							<span class="input-group-addon"><i class="fa  fa-lock fa-lg fa-fw"></i></span>
+				    		<input id="password" type="password" name="psw" ng-model="password" class="form-control" placeholder="Password" required >
+				    	</div>
+
+                        <div style="margin-bottom: 10px" class="input-group">
+                            <label style="white-space:nowrap;">
+                              <input id="rememberme" id="login-remember" ng-model="rememberme"  type="checkbox" name="remember" value="true"> Remember me
+                            </label>
+                           </div>
+						<div class=" alert alert-danger " ng-show="error">{{error}}</div>
+						                               
+                        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+		                
+						<div style="border-top: 1px solid#888; margin-top:15px;padding-top:15px;" >
+	                                         <text>Don't have an account? </text>
+	                                        <a href ="#/register" ng-click="to_register()">
+	                                            Sign Up Here
+	                                        </a>
+	                                        <br>
+	                                        <text>Did you forget your password?</text>
+	                                        <a style="white-space:nowrap;" style="font-size: 85%" href ="#/forgot_password" ng-click="to_register()">
+                                                Click here!
+                                            </a>
+	                     </div>
+					
+					</form>
+								
+				
+			</div>	
+			<ng-include src=" ' /security/body_logos_template.html ' "></ng-include>
+		</div>
+	</div>
+
+
+

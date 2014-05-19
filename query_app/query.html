@@ -1,0 +1,257 @@
+<style type="text/css">
+.ace_editor { height: 200px; }
+
+.disable {
+    background-color: grey;
+    }
+button {
+ cursor: pointer;
+}
+.glyphicon {
+ cursor: pointer;
+}
+.modal {
+  display: block; 
+}
+.modal-dialog {
+	width:400px;
+	}
+</style>
+<div  class="row" >
+	
+	<div class="{{readOnly && 'panel panel-primary' || 'panel panel-default'}}" >
+			<div class="panel-heading row" > 
+				
+
+						<h2 class="panel-title " style="color:rgb(256,256,256); font-size:19px">
+							Step 1: Select Fields
+						
+				
+						<i class= "pull-right {{showFields && 'fa fa-compress fa-lg' || 'fa fa-expand fa-lg'  }}" ng-click="showFields=!showFields" style="cursor:pointer;"></i> 
+						</h2>
+
+		
+
+						
+				
+			</div>
+			
+			<div class="panel-body"  ng-show="showFields" >
+						<button type="button" class="btn btn-default " ng-click="check_all(fields_btn);query_changed()" ng-disabled="!readOnly"> 
+								<i class="fa fa-check-square fa-lg"></i>  Check All</button>
+						<button type="button" class="btn btn-default " ng-click="uncheck_all(fields_btn);query_changed()" ng-disabled="!readOnly"> 
+									<i class="fa  fa-minus-square fa-lg"></i> Uncheck All
+									</button>				
+					<div class="form-group col-md-12" ng-repeat="field in fields_btn" style="margin-bottom:1ex;margin-top:1ex;" ng-click="query_changed()">
+						
+						<input ng-disabled="!readOnly" type="checkbox" ng-model="field.clicked"> <span style="padding-left:1ex"><b>{{field.name}} </b></span>
+						
+							<span style="color:darkgrey; font-size:12px"> {{col_comments[$index]}} </span>
+						
+					</div>
+				
+			</div>
+	</div>
+
+	<div>
+	<div class="{{readOnly && 'panel panel-primary' || 'panel panel-default'}}" >
+		<div class="panel-heading"  > 
+				
+				<h2 class="panel-title " style="color:rgb(256,256,256); font-size:19px">
+				
+				
+					Step 2 (optional): Apply filters
+				
+				
+
+					<i  class= "pull-right {{showConditions && 'fa fa-compress fa-lg' || 'fa fa-expand fa-lg' }}" ng-click="showConditions=!showConditions"  style="cursor:pointer;"></i>
+				</h2>
+		</div>
+		<div class="panel-body" ng-show="showConditions" >
+			
+			<div ng-repeat="cond in conditions" class="panel-body" >
+				<div class="row">
+	
+			
+					<div class="col-md-3 ">
+							<select ui-select2 ng-disabled="!readOnly" class="form-control" ng-model="cond.field" ng-change="query_changed()" data-placeholder="Choose field">
+								<option value=""></option>
+					     		<option ng-repeat="field in columns " value="{{field}}" ng-disabled="!readOnly">{{field}}</option>
+					  			// unique options from the categories
+							</select>
+					</div>
+			
+					<div class="col-md-3"> 
+							<select ui-select2  ng-disabled="!readOnly" class="form-control" ng-model="cond.op" ng-change="query_changed()" data-placeholder="Choose criteria">
+								<option value=""></option>
+					     		<option ng-repeat="op in comparison_op " value="{{op.op}}" ng-disabled="!readOnly">{{op.op}}</option>
+					  			// unique options from the categories
+							</select>
+					</div>		
+					<div class="col-md-2 col-offset-md-1">
+					     		 <input ng-disabled="!readOnly" type="text" ng-model="cond.value" ng-change="query_changed()" ng-disabled="!readOnly" placeholder="Enter value" class="form-control">
+					</div>
+			
+					<div class="col-md-1" >
+								<i   ng-disabled="!readOnly" class=" pull-right fa fa-trash-o fa-2x" 	style="cursor:pointer;" ng-click="remove_condition($index);query_changed()" ></i> 	
+					</div>
+					
+				</div>
+			</div>
+				<div class="row">
+					<div class="col-md-2 col-md-offset-5" >
+						<button type="button" class="btn btn-default "ng-disabled="!readOnly" ng-click="add_condition()" style="cursor:pointer; padding-right:3ex"><i class="fa fa-plus-square-o fa-lg"></i> Add Filter </button>
+					</div>
+				</div>
+				
+		</div>
+
+
+	</div>
+	<div class="panel panel-primary" >
+		<div class="panel-heading" >
+			<h2 class="panel-title " style="color:rgb(256,256,256); font-size:19px">
+				Step 3 (optional): Customize the SQL query
+					
+					<i class= "pull-right {{showQuery && 'fa fa-compress fa-lg' || 'fa fa-expand fa-lg'  }}"  ng-click="showQuery=!showQuery" style="cursor:pointer;"></i> 
+			</h2>
+		</div>	
+		<div class="panel-body" ng-show = "showQuery">	
+				<div class="col-md-12 " >
+					<div class=" alert alert-warning " ng-show="!readOnly"> Since you have entered the edited mode, the above guided query-building options have been disabled </div>
+					<div ui-ace="aceOption" readonly="true" ng-model="aceModel" ng-dblclick="edit_query()">
+					</div>
+				</div>
+			
+		<div class="row" style="margin-top:15px">
+				<div class="col-md-2 col-md-offset-5" ng-show="readOnly">
+		   	 		<button type="button" class="btn btn-default "  ng-click="edit_query()"  ><i class="fa fa-pencil-square-o fa-lg"></i>  Edit SQL Query</button>
+		   	 	</div>
+				<div class="col-md-2 col-md-offset-5" >
+					<button ng-show="!readOnly" type="button" class="btn btn-default" ng-click="check_query(document)" tooltip="Check the query syntax by evaluating the expression in postgres">Check Query syntax </button>
+				</div>
+		   	</div>
+		</div>			
+
+			
+		   
+		
+
+	</div>
+	<div class="panel panel-primary" >
+		<div class="panel-heading" >
+			<h2 class="panel-title " style="color:rgb(256,256,256); font-size:19px">
+				Step 4: Check & Run
+			</h2>
+		</div>	
+		<div class="panel-body">	
+
+		    <div class="row">
+		    	<div class="col-md-12 " >
+		    		
+		    		<div class=" alert alert-danger " ng-show="error"><i class="fa fa-times-circle fa-lg"></i>  {{error}}</div>
+		    			<div class="col-md-4 " >
+		    				<div class=" alert alert-success " ng-show="success"><i class="fa fa-check fa-lg"></i>{{success}}</div>
+		    			</div>
+			    		<div class="col-md-4 " >
+			    			<div class=" alert alert-success " ng-show="success"><i class="fa fa-align-left fa-lg"></i> Estimated number of rows: ~{{success_rows}}</div>
+			    		</div>
+			    		<div class="col-md-4 " >
+			    			<div class=" alert alert-success " ng-show="success"><i class="fa fa-file-text fa-lg"></i> Estimated size: ~{{success_size}}</div>
+			    		</div>
+			    		
+			    			<div class=" alert alert-info " ng-show="isViewLoading">Running the query... <i class="fa fa-cog fa-spin"></i></div>
+			    		
+					</div>
+				</div>
+			
+
+		   	<div class="row" style="margin-top:15px">
+		 		<div class="col-md-2" >
+					<button type="button" class="btn btn-default" ng-click="realtime_query()" tooltip="Limited in time & size" ><i class="fa fa-bar-chart-o fa-lg"></i> Plot & Preview </button>
+				</div>	
+				<div class="col-md-2" >
+					<button type="button" class="btn btn-default" ng-click="run_batch_query()" tooltip=" Send the query to a queue and receive the results when ready."><i class="fa fa-play-circle fa-lg"></i> Run  Query</button>
+				</div>
+	   	
+		   	</div>
+		</div>
+
+	</div>
+<script type="text/ng-template" id="myModalContent.html">
+<div class="modal-dialog">
+  <div class="modal-content">
+        <div class="modal-header">
+            <h3>Run Query</h3>
+        </div>
+        <div class="modal-body">
+        	<p> The query will be sent to a processing queue. When it has been successfully processed you will receive an email with a link to download the results. 
+        	You can follow the status of this query in your Activity panel</p>
+           <p>Please select the format of your catalog:</p>
+            <select ui-select2 class="form-control" ng-model="selected.file_format">
+            	<option ng-repeat="format in formats" value="{{format}}">{{format}}</option> 
+  			</select>
+			<p>Do you want to submit the query?</p>
+        </div>
+        <div class="modal-footer">
+
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-success" ng-click="batch_query()">Run Query</button>
+        </div>
+    
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</script>
+<script type="text/ng-template" id="EnableQuery.html">
+<div class="modal-dialog">
+  <div class="modal-content">
+        <div class="modal-header">
+            <h3> Edit SQL Query</h3>
+        </div>
+        <div class="modal-body">
+        	
+           <p>If you proceed to edit the query, the guided query-building options will be disabled. Do you want to proceed?</p>
+           <p>Tip :
+           <span style="font-size:12px"> if you intent to Plot & Preview your custom SQL query, it is advised to explicitly limit the query (add LIMIT 1000 to the end of your SQL sentence) to speed up the preview.</p>
+		   </span>	
+		   </p>
+        </div>
+        <div class="modal-footer">
+
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-success" ng-click="edit()">Continue</button>
+        </div>
+    
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</script>
+
+<script type="text/ng-template" id="RealTime_Query.html">
+<div class="modal-dialog">
+  <div class="modal-content">
+        <div class="modal-header">
+            <h3>Plot & Preview</h3>
+        </div>
+        <div class="modal-body">
+        	<p>Here you can preview and plot the results of your query to better understand the data you will receive.
+				The preview will only work on queries that take less than 1 minute to execute.
+				The output will also be limited to a maximum number of entries. We recommend 1000 entries, greater limits can lead to low browser performance and unexpected behaviors.</p>
+           <p>Select maximum records retrieved</p>
+          
+            <select ui-select2 class="form-control" ng-model="selected.rows_nbr">
+            	<option ng-repeat="format in formats" value="{{format}}">{{format}}</option> 
+  			</select>        	
+           <p>Proceed to run the preview and plot query?</p>
+			<div class=" alert alert-info " ng-show="isViewLoading">Running the query... <i class="fa fa-cog fa-spin"></i></div>
+        </div>
+        <div class="modal-footer">
+
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-success" ng-disabled="isViewLoading" ng-click="run_query()">Continue</button>
+        </div>
+    
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</script>	
+	<div ui-view></div>
+</div>

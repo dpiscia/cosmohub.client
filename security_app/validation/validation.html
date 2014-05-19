@@ -1,0 +1,24 @@
+<ng-include src=" ' /security/top_logo_template.html ' "></ng-include>	
+<div class="container">
+		<div  class="row central" style="padding-top: 50px; padding-bottom: 40px;">
+
+			<div class=" col-md-4 col-md-push-5 ">
+							
+
+
+
+						
+						<div class=" alert alert-danger " ng-show="error">{{error}}</div>
+						<div class=" alert alert-success " ng-show="success">{{success}}</div>
+
+									<div class="row" style="padding-bottom: 2ex">
+
+								<button  ng-click="to_login()" class="btn  btn-info btn-block">Go to log in</button>
+							
+						</div>	
+			</div>
+				
+			<ng-include src=" ' /security/body_logos_template.html ' "></ng-include>
+		</div>
+		
+</div>

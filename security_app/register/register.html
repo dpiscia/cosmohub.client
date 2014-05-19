@@ -1,0 +1,62 @@
+
+
+
+	<ng-include src=" ' /security/top_logo_template.html ' "></ng-include>
+	<div class="container">
+		<div class="row central" style="padding-top: 20px; padding-bottom: 40px;">
+			<div class=" col-md-4 col-md-push-5">
+                <a ng-click="to_login()" class="btn btn-link"><i class="fa fa-long-arrow-left"></i> Return to log in</a>
+				<div class="panel-body">
+					<form name="form" method="post" ng-submit="myFunc(form)" novalidate>
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i class="fa  fa-user fa-lg fa-fw"></i></span>
+							<input type="text" name="name" id="name" placeholder="Full name" unique-name required ng-model="name" autofocus class="form-control">
+							<i ng-show="busy" class="halflings-icon refresh rotating"></i>
+							<span ng-show="form.name.$dirty &amp;&amp; form.name.$error.required" class="help-block">Please choose a name</span
+							><span ng-show="form.name.$dirty &amp;&amp; form.name.$error.isTaken" class="help-block">name already taken</span
+							><span ng-show="form.name.$dirty &amp;&amp; form.name.$error.invalidChars" class="help-block">name may not contain any non-url-safe characters</span>
+						</div>
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i class="fa  fa-envelope fa-lg fa-fw"></i></span>
+							<input type="email" ng-model="email" name="email" id="email" placeholder="Email" required class="form-control">
+							<span ng-show="form.email.$dirty &amp;&amp; form.email.$error.email" class="help-block">Email is invalid</span>
+						</div>
+						
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i class="fa  fa-lock fa-lg fa-fw"></i></span>
+							<input type="password" name="password" id="password" ng-model="password" placeholder="Password" required match="verification" class="form-control">
+							<span ng-show="form.password.$dirty &amp;&amp; form.password.$error.required" class="help-block">Please enter a password</span>
+						</div>
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i class="fa  fa-lock fa-lg fa-fw"></i></span>
+							<input type="password" name="verification" id="verification" ng-model="verification" placeholder="Repeat your password"  required match="password" class="form-control">
+							<span ng-show="form.verification.$dirty &amp;&amp; form.verification.$error.required" class="help-block">Please repeat your password</span>
+							<span ng-show="form.verification.$dirty &amp;&amp; form.verification.$error.match &amp;&amp; !form.verification.$error.required" class="help-block">Passwords don't match</span>
+						</div>
+						<div style="margin-bottom: 25px" class=" input-group">
+							<span class="input-group-addon"><i class="fa  fa-group fa-lg fa-fw"></i></span>
+								<select class="form-control help-block" ui-select2 multiple ng-model="list_of_string" data-placeholder="Project affiliation">
+									<option value=""></option>
+									<option ng-repeat="group in groups" value="{{group.name}}">{{group.name}}</option>
+								</select>
+						</div>
+
+
+						
+
+						<div class=" alert alert-danger " ng-show="error">{{error}}</div>
+						<div class=" alert alert-success " ng-show="success">{{success}}</div>
+						<button type="submit" value="Sign up" ng-disabled="form.$invalid || success" class = "btn  btn-primary btn-block">Sign up</button>
+					</form>
+					
+					
+				</div>
+
+
+	
+		</div>
+		<ng-include src=" ' /security/body_logos_template.html ' "></ng-include>
+	</div>
+</div>
+
+
