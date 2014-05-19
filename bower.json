@@ -1,7 +1,7 @@
 {
     "name": "cosmohub_client",
     "version": "0.0.1",
-    "main": ".",
+    "main": "client_cosmohub/src/cosmohub_App/*.js",
     "ignore": [
         "source",
         "spec",
